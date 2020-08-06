@@ -1,18 +1,28 @@
 define(['cookie'], function() {
     return {
         init: function() {
-
+            // 顶部登录退出    
+            if (get('username')) {
+                $('.h').html(get('username'))
+                $('.h').next().html('退出')
+                $('.h').next().attr('href', '')
+                $('.h').next().on('click', function() {
+                    remove('username');
+                    location.reload();
+                })
+            }
             //渲染
             let baseUrl = "http://localhost/wampROOM1/twoproject2copy/";
             let id = location.search.split("=")[1];
-            const li0 = $('#J_UlThumb li:nth-child(1)');
-            const li1 = $('#J_UlThumb li:nth-child(2)');
-            const li2 = $('#J_UlThumb li:nth-child(3)');
-            const li3 = $('#J_UlThumb li:nth-child(4)');
-            const li4 = $('#J_UlThumb li:nth-child(5)');
+            // const li0 = $('#J_UlThumb li:nth-child(1)');
+            // const li1 = $('#J_UlThumb li:nth-child(2)');
+            // const li2 = $('#J_UlThumb li:nth-child(3)');
+            // const li3 = $('#J_UlThumb li:nth-child(4)');
+            // const li4 = $('#J_UlThumb li:nth-child(5)');
             const big_pic = $('.tb-gallery');
             const tit = $('.tit1');
             const color_list = $('#color-list li');
+            const sma_list = $('#J_UlThumb li')
             $.ajax({
                 type: "GET",
                 data: {
@@ -20,35 +30,23 @@ define(['cookie'], function() {
                 },
                 url: "http://localhost/wampROOM1/twoproject2copy/php/detail.php",
                 success: function(data) {
-
                     var data = JSON.parse(data);
-                    var temp0 = '';
-                    var temp1 = '';
-                    var temp2 = '';
-                    var temp3 = '';
-                    var temp4 = '';
-                    var temp5 = '';
                     var pic = JSON.parse(data.pro_img);
                     var pic_color = JSON.parse(data.pro_classify);
+                    var temp0 = '';
+                    var temp5 = '';
                     temp5 += `<div class="span_small"></div>`
                     temp5 += `<img class="pic" src="${pic[0].src}">`
                     temp0 += `<img class="pic" src="${pic[0].src}">`
-                    temp1 += `<img class="pic" src="${pic[1].src}">`
-                    temp2 += `<img class="pic" src="${pic[2].src}">`
-                    temp3 += `<img class="pic" src="${pic[3].src}">`
-                    temp4 += `<img class="pic" src="${pic[4].src}">`
-                    li0[0].innerHTML = temp0;
-                    li1[0].innerHTML = temp1;
-                    li2[0].innerHTML = temp2;
-                    li3[0].innerHTML = temp3;
-                    li4[0].innerHTML = temp4;
-                    big_pic[0].innerHTML = temp5;
-                    tit[0].innerHTML = data.pro_title
-                    for (var i = 0; i < color_list.length; i++) {
-                        // console.log(pic[i].src)
-                        color_list[i].innerHTML = `<img  src="${pic_color[i].src}">`
-                    }
-                    //放大镜
+                    $('.tb-gallery').html(temp5)
+                    $('.tit1').html(data.pro_title)
+                    $('#J_UlThumb li').each(function(index, value) {
+                        $(value).html(`<img class="pic" src=${pic[index].src}>`)
+                    })
+                    $('#color-list li').each(function(index, value) {
+                            $(value).html(`<img  src="${pic_color[index].src}">`)
+                        })
+                        //放大镜
                     const Big_pic = $('.tb-gallery');
                     const small_pic = $('#J_UlThumb li');
                     const span_small = $('.span_small');
@@ -91,8 +89,6 @@ define(['cookie'], function() {
                     }
                     fnn()
                 }
-
-
             });
             // 数量加减
             // const plus = $('.spa2')

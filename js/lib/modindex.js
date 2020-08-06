@@ -1,6 +1,19 @@
 define(['lazy'], function() {
     return {
         init: function() {
+
+            // 顶部登录退出
+            if (get('username')) {
+                $('.h').html(get('username'))
+
+                $('#U_Exit').on('click', function() {
+                    remove('username')
+                    $('.h').next().attr('display', 'none')
+                    location.reload()
+                        //
+                })
+
+            }
             let left = $('.slider-1').offset().left;
             let list = $(".slider>ul>li")
             let len = list.length
@@ -115,7 +128,7 @@ define(['lazy'], function() {
                 url: "http://localhost/wampROOM1/twoproject2copy/php/index.php",
                 success: function(data) {
                     var data = JSON.parse(data)
-                    console.log(data)
+                        // console.log(data)
                     var temp = '';
                     temp = '<ul>'
                     for (var key of data) {

@@ -19,4 +19,8 @@ function get(key) {
         }
         return ''; // 如果循环结束 都没有 则返回空字符串
     }
+};
+
+function remove(key) {
+    set(key, '', -1);
 }
